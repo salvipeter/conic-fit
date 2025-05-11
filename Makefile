@@ -8,5 +8,8 @@ LIBS=-L$(GEOM)/release -lgeom -lasan
 CXXFLAGS=-std=c++20 -Wall -pedantic -O3 -DNDEBUG $(INCLUDES)
 #CXXFLAGS=-std=c++20 -Wall -pedantic -O0 -g -DDEBUG $(INCLUDES) -fsanitize=address
 
-test-fit: test-fit.o conic-fit.o fitter.o solver.o
-	$(CXX) -o $@ $^ $(LIBS)
+libconic.a: conic-fit.o fitter.o solver.o
+	$(AR) rcs $@ $^
+
+test-fit: test-fit.o libconic.a
+	$(CXX) -o $@ $< -L. -lconic $(LIBS)

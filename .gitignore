@@ -1,3 +1,4 @@
 *~
 *.o
 test-fit
+libconic.a
