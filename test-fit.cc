@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
   int canonical = std::atoi(argv[1]);
   if (canonical <= 0 || canonical > 7) {
     auto polyline = readTXT(argv[1]);
-    cf.fit(polyline);
+    cf.fit(polyline, Conic::CLOSED);
     auto [min, max] = bbox(polyline);
     center = (min + max) / 2;
     radius = (max - min).norm() / 2 * 1.2;

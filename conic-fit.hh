@@ -18,7 +18,14 @@ struct Conic {
 
   // Fitter
   using Polyline = std::vector<Geometry::Point2D>;
-  void fit(const Polyline &polyline, double tolerance = 1e-8);
+  enum FitType {
+    SIMPLE = 0,                 // if no other option is used
+    CLOSED = 1,                 // points wrap around, first coming after last
+    ORIGIN = 2,                 // fitted curve should go through the origin
+    MIDPOINT = 4,               // approximated integral with 3 points
+    SEGMENT = 8                 // exact integral on the segment
+  };
+  void fit(const Polyline &polyline, FitType type, double tolerance = 1e-8);
 
   // Classification
   enum Type {
@@ -26,3 +33,7 @@ struct Conic {
   };
   Type classify(double tolerance = 1e-8) const;
 };
+
+constexpr Conic::FitType operator|(Conic::FitType lhs, Conic::FitType rhs) {
+  return static_cast<Conic::FitType>(static_cast<int>(lhs) | static_cast<Conic::FitType>(rhs));
+}
